@@ -1,0 +1,8 @@
+// testing
+print(widget["Quest2"]);
+
+print(widget["Quest2"].element["0001"]);
+
+$newWidget = widget["myWidget"];
+
+print($newWidget);

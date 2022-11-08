@@ -1,0 +1,5 @@
+display_message("You did it! Quest_0001 completed!" );
+
+execute_script("QUEST_0001/QUEST_0001_reward", true);
+
+

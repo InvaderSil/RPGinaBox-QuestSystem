@@ -1,0 +1,34 @@
+// parameters
+// $questId -> the quest id as found in the quest editor
+// $stepArray -> array of boolean initialized to false
+
+if $questId == null then
+	print("invalid questId");
+	return -1;
+end;
+
+if $stepArray == null or $stepArray.size() == 0 then
+	print("invalid stepArray");
+	return -1;
+end;
+
+if $questTitle == null then
+	$questTitle = "This is quest " + $questId;
+end;
+
+$returnValues = codex["rewardScript": null, "startScript": null, "endScript": null, "abandonScript": null];
+$newQuest = codex["questID": $questId, 	
+	"title": $questTitle,
+	"steps": $stepArray,
+	"rewardScript": $questId + "/" + $questId + "_reward",
+	"startScript": $questId + "/" + $questId + "_start",
+	"endScript": $questId + "/" + $questId + "_end",
+	"abandonScript": null,
+	"returnValues": $returnValues,
+	"isFinished": false
+	];
+
+// Add to activeQuestList
+$localProp = global.property["ActiveQuestList"];
+$localProp.push_front($newQuest);
+global.property["ActiveQuestList"] = $localProp;

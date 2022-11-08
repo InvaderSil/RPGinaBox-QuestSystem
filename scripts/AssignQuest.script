@@ -1,0 +1,8 @@
+if $quest_id == null then
+	print("No valid quest_id");
+	return -1;
+end;
+
+// Ideally I'd be using the script name in the codex object but this is ok for the time being given this convention
+$questScriptName = $quest_id + "/" + $quest_id + "_init";
+execute_script($questScriptName);

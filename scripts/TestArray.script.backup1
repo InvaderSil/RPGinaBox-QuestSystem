@@ -1,0 +1,6 @@
+$questArray = global.property["ActiveQuestList"];
+
+$questArray[1]["title"] = "Is this update?";
+$questArray[1]["steps"][0] = true;
+
+$questArray[0]["steps"][0] = true;

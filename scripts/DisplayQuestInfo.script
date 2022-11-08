@@ -1,0 +1,5 @@
+if global.property["ActiveQuestList"] == null then
+	display_message("There are no active quests");
+else
+	print(global.property["ActiveQuestList"]);
+end;

@@ -1,0 +1,8 @@
+
+// required for InitQuest
+$questId = "QUEST_0001";
+// required for InitQuest
+$stepArray = array[false, false];
+execute_script("InitQuest", true);
+
+execute_script($questId + "/" + $questId + "_start");
