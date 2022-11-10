@@ -1,0 +1,3 @@
+$questId = "QUEST_0001";
+
+execute_script("AbandonQuest", true);

@@ -1,0 +1,5 @@
+
+execute_script("PopulateQuestLog", true);
+show_widget("Quest2");
+
+

@@ -1,0 +1,32 @@
+if($questId == null) then
+	print("Not a valid quest id");
+	return -1;
+end;
+
+$result = display_choices("You aren't doing this quest any more. Are you sure?", 
+	array["Yes", "No"]);
+	
+if($result == 1) then
+	display_message("Ok, back ya go!");
+	return 0;
+end;
+
+$questArray = global.property["ActiveQuestList"];
+$isFound = false;
+$index = 0;
+for $localQuest in $questArray do
+	if $localQuest["questID"] == $questId and $localQuest["isFinished"] == false then
+		$isFound = true;
+		print("questId -> " + $questId + " is found!");
+		break;
+	end;
+	$index += 1;
+end;
+
+if $isFound == false then
+	print($questId + " was not found.");
+	return -1;
+end;
+	
+$questArray.remove($index);
+execute_script("PopulateQuestLog");

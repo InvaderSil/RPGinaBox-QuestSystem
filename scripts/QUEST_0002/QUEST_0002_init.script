@@ -6,4 +6,3 @@ $stepArray = array[false, false];
 execute_script("InitQuest", true);
 
 execute_script($questId + "/" + $questId + "_start");
-

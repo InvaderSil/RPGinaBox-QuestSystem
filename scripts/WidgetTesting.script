@@ -1,8 +1,16 @@
 // testing
 print(widget["Quest2"]);
 
-print(widget["Quest2"].element["0001"]);
+// first button
+print(widget["Quest2"].element["0002"]);
+//widget["Quest2"].element["0002"].visible = false;
+widget["Quest2"].element["0002"].text = "Display a message";
+widget["Quest2"].element["0002"].script = "DisplayAMessage";
 
-$newWidget = widget["myWidget"];
 
-print($newWidget);
+//widget["Quest2"].element["0002"].text = "Updated in script";
+
+ //widget["Quest2"].element["0004"]
+
+
+//print(str(widget["Quest2"].element["0004"].currentvalue));

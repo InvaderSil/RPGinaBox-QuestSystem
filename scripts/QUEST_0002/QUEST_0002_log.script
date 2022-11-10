@@ -1,0 +1,3 @@
+$questId = "QUEST_0002";
+
+execute_script("DisplaySelectedQuest", true);
