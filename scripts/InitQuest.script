@@ -19,6 +19,7 @@ end;
 $returnValues = codex["rewardScript": null, "startScript": null, "endScript": null, "abandonScript": null];
 $newQuest = codex["questID": $questId, 	
 	"title": $questTitle,
+	"description": $questDescription,
 	"steps": $stepArray,
 	"rewardScript": $questId + "/" + $questId + "_reward",
 	"startScript": $questId + "/" + $questId + "_start",

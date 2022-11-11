@@ -1,4 +1,14 @@
-//display_message("Showing quest info now! -> " + $questId);
+// Param: $questObject -> is a codex holding the quest id and the 
+if ($questObject == null) then
+	print("invalid questObject");
+	return -1;
+end;
+
+$questId = $questObject["questId"];
+$selectedImageId = $questObject["checkImageId"];
+$questDetailsElemntId = "0001";
+$abaondonElementId = "0005";
+$questWidgetId = "Quest2";
 
 $questArray = global.property["ActiveQuestList"];
 $isFound = false;
@@ -30,10 +40,18 @@ global.property["SelectedQuestMax"] = $totalCount;
 global.property["SelectedQuestValue"] = $completedCount;
 
 // Set the quest details
-$textDescription = $questArray[$index]["title"];
-widget["Quest2"].element["0001"].text = $textDescription;
+$textDescription = "Title: " + str($questArray[$index]["title"]);
+$textDescription = $textDescription + "\nDescription:\n " + str($questArray[$index]["description"]);
+widget[$questWidgetId].element[$questDetailsElemntId].text = $textDescription;
 
 // And finally, set the abandon button
-widget["Quest2"].element["0005"].script = $questArray[$index]["abandonScript"];
+widget[$questWidgetId].element[$abaondonElementId].script = $questArray[$index]["abandonScript"];
 
+// no, this is finally. Enable the check box image next to the selected button
+$buttonData = global.property["QuestLogButtons"];
+for $button in $buttonData do
+	$checkButtonId = $button["checkImageId"];
+	widget[$questWidgetId].element[$checkButtonId].visible = false;
+end;
 
+widget[$questWidgetId].element[$selectedImageId].visible = true;

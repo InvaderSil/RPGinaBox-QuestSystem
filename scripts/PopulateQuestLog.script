@@ -1,9 +1,9 @@
 
-
 $questWidget = widget["Quest2"];
 
-$buttonList = array[codex["buttonId": "0002", "checkImageId": "0008"],
-	codex["buttonId": "0003", "checkImageId": "0009"]];
+//$buttonList = array[codex["buttonId": "0002", "checkImageId": "0008"],
+	//codex["buttonId": "0003", "checkImageId": "0009"]];
+$buttonList = global.property["QuestLogButtons"];
 
 $questArray = global.property["ActiveQuestList"];
 
@@ -19,14 +19,14 @@ for $buttonObj in $buttonList do
 	$button = $buttonObj["buttonId"];
 	// Making sure we update buttons that mapp
 	if ($questArrayIndex < $questArray.size()) then
-		widget["Quest2"].element[$button].text = $questArray[$questArrayIndex]["title"];
-		widget["Quest2"].element[$button].script = $questArray[$questArrayIndex]["logScript"];
-		widget["Quest2"].element[$button].visible = true;
+		$questWidget.element[$button].text = $questArray[$questArrayIndex]["title"];
+		$questWidget.element[$button].script = $questArray[$questArrayIndex]["logScript"];
+		$questWidget.element[$button].visible = true;
 	else
-		widget["Quest2"].element[$button].visible = false;
+		$questWidget.element[$button].visible = false;
 	end;
 	$questArrayIndex += 1;
 end;
 
-$questId = $questArray[0]["questID"];
+$questObject = codex["questId": $questArray[0]["questID"], "checkImageId": $buttonList[0]["checkImageId"]];
 execute_script("DisplaySelectedQuest", true);

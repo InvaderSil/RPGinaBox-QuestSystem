@@ -3,6 +3,9 @@
 $questId = "QUEST_0001";
 // required for InitQuest
 $stepArray = array[false, false];
+$questTitle = "First!";
+$questDescription = "This is going to be a long, long, long descripiton to see what it looks like in the text box.";
+
 execute_script("InitQuest", true);
 
 execute_script($questId + "/" + $questId + "_start");

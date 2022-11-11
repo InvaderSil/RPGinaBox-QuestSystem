@@ -2,6 +2,8 @@
 // init the quest
 $questId = "QUEST_0002";
 $stepArray = array[false, false];
+$questTitle = "A second quest";
+$questDescription = "Go go second quest!!";
 
 execute_script("InitQuest", true);
 
