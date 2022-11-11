@@ -1,4 +1,0 @@
-// This should go into a game init script;
-set_global_property("ActiveQuestList", array[]);
-
-load_map("overworld", coord[0, 0, 0], SOUTH);

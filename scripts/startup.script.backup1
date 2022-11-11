@@ -1,4 +1,0 @@
-// This should go into a game init script;
-execute_script("InitQuestSystem", true);
-
-load_map("overworld", coord[0, 0, 0], SOUTH);
