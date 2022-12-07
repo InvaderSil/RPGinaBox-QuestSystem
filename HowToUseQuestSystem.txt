@@ -1,0 +1,106 @@
+***************************
+* How to use quest system *
+***************************
+1. Copy the core scripts to your scripts directory. 
+
+2. Go to the Quest Editor and create a quest. Save it and make a note of the quest id. 
+
+3. Create a new directory under scripts with the following format using the new quest id:
+	<Quest Id>
+Example:
+	QUEST_0001
+
+4. In the sample project, copy the QUEST_0001_* scripts and paste to your new directory. These scripts should be unique per quest. 
+
+5. Open your startup file and add the following line:
+	execute_script("InitQuestSystem", true);
+
+6. In the Global Event Scripts section of the Game Configuration, select AssignQuest to the Quest Given event and EndQuest to the Quest Completed event.
+	
+7. In the QUEST_0001_init script, open it to adjust the number of tasks in this quest. Go to the $stepArray and add as many values in the array, set to false, as you have tasks in the quest. If you have 5 tasks to complete, then it will have 5 false values. 
+	$stepArray = array[false, false, false, false, false]; 
+	
+8. The other QUEST_0001_* scripts can be updated to your liking. 
+
+9. Next is to create quest objects. You can look at the examples in the sample project in the overworld map. Two things are critical. One is the $questId value that needs to be what's quest id this task is for. Next is $stepNumber. This is a number that corresponds to the position in the $stepArray. step 0 is $stepArray[0] and so on and so forth. $stepNumber should not exceed the size of $stepArray. Finally, UpdateQuest should be called. 
+
+10. Finally, the give_quest function should be called. give_quest will trigger the Give Quest event to intialize the quest. 
+
+**********************************************************************
+
+Core scripts:
+	AssignQuest
+	EndQuest
+	InitQuest
+	InitQuestSystem
+	UpdateQuest
+	
+AssignQuest is called via the Quest Given event in the Global Event Scripts of the Game Configuration. The script must be manually added to the event. This is a passthrough script to the quest init script.
+
+EndQuest is called via the Quest Completed event in the Global Event Scripts of the Game Configuration. The script must be manually added to the event. This is responsible for calling the quest end script and then do cleanup which includes removing the quest from the internal active quest array.
+
+InitQuest is a script to create the core quest codex objects. It will then add the object to the internal active quest array.
+
+InitQuestSystem is called via your startup script. It will initialize any global properties needed for the quest system.
+
+UpdateQuest is called by the objects that are a part of the quest. This will update the passed in step number to true then check to see if all steps in the step array is true. If so, it will call the complete_script function. 
+
+All the core scripts use parameters that should be defined in the calling script. Required parameters will have a check at the top of the function. If they are null, the script will print to the debug console and return.  
+
+**********************************************************************
+
+Quest Scripts:
+	<Quest id>_init
+	<Quest id>_start
+	<Quest id>_end
+	<Quest id>_reward 
+	
+Quest scripts must be in a directory of the quest id. Example:
+* QUEST_0001
+  |-QUEST_0001_end
+  |-QUEST_0001_init
+  |-QUEST_0001_reward
+  |-QUEST_0001_start
+
+_init is contains the Quest ID and the step array used to determine the number of steps in the quests. stepArray must contain at least 1 value. All values must be set to false. _init is called from AssignQuest. This script is tasked to create the quest codex object and store it in the global property. It then calles _start
+
+_start is a script to customize to show the player info about the quest. Or whatever else. _start does not call anything else in the quest system.
+
+_end is a script to customize to show the player at the completion of a quest. It is called by EndScript. 
+
+_reward is a script to customize any kind of reward that player may get from the quest. It's an optional script. It would need to be called from another script such as _end. 
+
+***********************************************************************************
+
+quest codex defintion
+
+The quest object should look like the following:
+$newQuest = codex["questID": $questId, 	
+	"title": "A description of the quest",
+	"steps": $stepArray,
+	"rewardScript": null,
+	"startScript": null,
+	"endScript": null,
+	"abandonScript": null,
+	"returnValues": $returnValues
+	];
+
+$stepArray is defined as the following 
+	$stepArray = array[false, false];
+
+$returnValues is defined by the following
+	$returnValues = codex["rewardScript": null, "startScript": null, "endScript": null, "abandonScript": null];
+	
+	
+$stepArray is used to contain the true or false value of if the step was done. In this version, it's simply a boolean. It could be something more comprehensive like another codex object.
+
+questID -> The id of the quest as found in the Quest Editor
+title -> Just a human readable description of the quest. Can be the same as the description in the quest.
+rewardScript -> The name of the script that will fire when it completes.
+startScript -> The name of the script that will fire when the quest is started. 
+endScript -> The name of the script that will fire at completion of the quest.
+abandonScript -> The name of the script that will fire if the quest fails.
+returnValues -> This is a codex that can contain any kind of return values if needed. This is kludgey but without proper return values, this is how it is. 
+
+In this version, the scripts are not used from the codex other than to be a reference. Future version will use those values. 
+

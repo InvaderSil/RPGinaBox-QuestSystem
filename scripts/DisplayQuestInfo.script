@@ -3,3 +3,9 @@ if global.property["ActiveQuestList"] == null then
 else
 	print(global.property["ActiveQuestList"]);
 end;
+
+print(player.quests);
+print(quest["QUEST_0001"]);
+$localQ = quest["QUEST_0001"];
+$localQ["image_name"] = "blue_Ckeckmart.png";
+print(quest["QUEST_0001"]);
