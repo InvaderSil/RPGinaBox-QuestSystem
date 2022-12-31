@@ -52,6 +52,7 @@ All the core scripts use parameters that should be defined in the calling script
 Quest Scripts:
 	<Quest id>_init
 	<Quest id>_start
+	<Quest id>_log
 	<Quest id>_end
 	<Quest id>_reward 
 	
@@ -59,10 +60,13 @@ Quest scripts must be in a directory of the quest id. Example:
 * QUEST_0001
   |-QUEST_0001_end
   |-QUEST_0001_init
+  |-QUEST_0001_log
   |-QUEST_0001_reward
   |-QUEST_0001_start
 
 _init is contains the Quest ID and the step array used to determine the number of steps in the quests. stepArray must contain at least 1 value. All values must be set to false. _init is called from AssignQuest. This script is tasked to create the quest codex object and store it in the global property. It then calles _start
+
+_log is a script used to populate the custom quest log
 
 _start is a script to customize to show the player info about the quest. Or whatever else. _start does not call anything else in the quest system.
 
@@ -81,6 +85,7 @@ $newQuest = codex["questID": $questId,
 	"rewardScript": null,
 	"startScript": null,
 	"endScript": null,
+	"logScript": null,
 	"abandonScript": null,
 	"returnValues": $returnValues
 	];
@@ -99,6 +104,7 @@ title -> Just a human readable description of the quest. Can be the same as the 
 rewardScript -> The name of the script that will fire when it completes.
 startScript -> The name of the script that will fire when the quest is started. 
 endScript -> The name of the script that will fire at completion of the quest.
+logScript -> The name of the script that will populate the log
 abandonScript -> The name of the script that will fire if the quest fails.
 returnValues -> This is a codex that can contain any kind of return values if needed. This is kludgey but without proper return values, this is how it is. 
 

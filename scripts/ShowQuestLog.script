@@ -1,5 +1,5 @@
 
 execute_script("PopulateQuestLog", true);
-show_widget("Quest2");
+//show_widget("Quest2");
 
 

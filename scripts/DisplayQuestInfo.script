@@ -1,11 +1,12 @@
-if global.property["ActiveQuestList"] == null then
-	display_message("There are no active quests");
-else
-	print(global.property["ActiveQuestList"]);
-end;
+print("I need at least one line to be able to save...");
+//if global.property["ActiveQuestList"] == null then
+//	display_message("There are no active quests");
+//else
+//	print(global.property["ActiveQuestList"]);
+//end;
 
-print(player.quests);
-print(quest["QUEST_0001"]);
-$localQ = quest["QUEST_0001"];
-$localQ["image_name"] = "blue_Ckeckmart.png";
-print(quest["QUEST_0001"]);
+//print(player.quests);
+//print(quest["QUEST_0001"]);
+//$localQ = quest["QUEST_0001"];
+//$localQ["image_name"] = "blue_Ckeckmart.png";
+//print(quest["QUEST_0001"]);

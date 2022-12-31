@@ -30,3 +30,5 @@ end;
 
 $questObject = codex["questId": $questArray[0]["questID"], "checkImageId": $buttonList[0]["checkImageId"]];
 execute_script("DisplaySelectedQuest", true);
+
+show_widget("Quest2");

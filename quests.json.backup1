@@ -5,6 +5,12 @@
       "name": "Quest Prototype",
       "description": "Just testing out the questing stuff",
       "tags": [],
+    },
+    {
+      "id": "QUEST_0002",
+      "name": "A new Quest",
+      "description": "This is the second quest created.",
+      "tags": [],
     }
   ],
   "localized": false
