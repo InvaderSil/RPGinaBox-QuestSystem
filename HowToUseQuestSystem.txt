@@ -26,6 +26,8 @@ Example:
 
 10. Finally, the give_quest function should be called. give_quest will trigger the Give Quest event to intialize the quest. 
 
+11. To use the enhanced quest log, create a widget button and assign the script PopulateQuestLog to it. 
+
 **********************************************************************
 
 Core scripts:
@@ -35,6 +37,9 @@ Core scripts:
 	InitQuestSystem
 	UpdateQuest
 	AbandonQuest
+	PopulateQuestLog
+	SetQuestLogSelectedIcon
+	DisplaySelectedQuest
 	
 AssignQuest is called via the Quest Given event in the Global Event Scripts of the Game Configuration. The script must be manually added to the event. This is a passthrough script to the quest init script.
 
@@ -46,7 +51,13 @@ InitQuestSystem is called via your startup script. It will initialize any global
 
 UpdateQuest is called by the objects that are a part of the quest. This will update the passed in step number to true then check to see if all steps in the step array is true. If so, it will call the complete_script function. 
 
-AbandonQuest is called when the player wants to stop with the quest. 
+AbandonQuest is called when the player wants to stop with the quest. Should be assigned to the Quest Failed global event. 
+
+PopulateQuestLog is called to show the enhanced quest log. Can be called from a UI widget
+
+SetQuestLogSelectedIcon is called when via a button in the quest log.
+
+DisplaySelectedQuest is called to show the details of the button selection. 
 
 All the core scripts use parameters that should be defined in the calling script. Required parameters will have a check at the top of the function. If they are null, the script will print to the debug console and return.  
 
@@ -79,15 +90,29 @@ _end is a script to customize to show the player at the completion of a quest. I
 
 _reward is a script to customize any kind of reward that player may get from the quest. It's an optional script. It would need to be called from another script such as _end. 
 
-_abandon is a script to customize any kind of action after abondonning a quest.
+_abandon is a script to customize any kind of action after abondonning a quest. It should call the fail_quest() function.
+
+***********************************************************************************
+Global Functions
+
+get_quest_script($questId, $scriptType)
+* returns the script from the quest codex for the questId and scriptType
+* will be an empty string if not found
+
+has_active_quest($questId) 
+* returns a boolean on if there's an active quest for the $questId in the codex. 
+* if the quest has been marked Completed or Abandoned, it will return false.
+
 
 ***********************************************************************************
 
 quest codex defintion
 
 The quest object should look like the following:
-$newQuest = codex["questID": $questId, 	
-	"title": "A description of the quest",
+$newQuest = codex[
+	"questID": $questId, 	
+	"title": "The title of the quest",
+	"description": "A description of the quest"
 	"steps": $stepArray,
 	"rewardScript": null,
 	"startScript": null,
@@ -105,12 +130,67 @@ $stepArray is used to contain the true or false value of if the step was done. I
 
 questID -> The id of the quest as found in the Quest Editor
 title -> Just a human readable description of the quest. Can be the same as the description in the quest.
+description -> A longer explanation of the quest
 rewardScript -> The name of the script that will fire when it completes.
 startScript -> The name of the script that will fire when the quest is started. 
 initScript -> The name of the script that functions as the constructor. 
 endScript -> The name of the script that will fire at completion of the quest.
 logScript -> The name of the script that will populate the log
 abandonScript -> The name of the script that will fire if the quest fails.
+questStatus -> The current status of the quest. Can be "In Progress", "Completed", or "Abandoned"
+
+*******************************************************************************************
+
+Call breakdown
+
+Quest system init
+
+* <start up script>
+	* InitQuestSystem // creates needed global properties
+
+Quest start
+
+* give_quest()
+	* AssignQuest // set as global event for Quest Given
+		* <quest id>_init // Quest init data
+			* InitQuest // Creates codex object for quest
+			* get_quest_script // to get the name of the start script
+			* <quest id>_start
+			
+
+Get quest item
+
+* <quick script on item/event>
+	* has_active_quest() // global function checking for the quest
+	* UpdateQuest // updates the steps array for the given index
+		* complete_quest()
+			* EndQuest // set as global event for Quest Completed
+				* get_quest_script() // global function to get the script name from quest codex
+				* <quest id>_end // script used to indicate the end of the quest
+					* <quest id>_reward // optional script to give a reward to player
+
+
+Display Quest Log Widget
+
+* ShowQuestLog // called from a UI interaction
+	* PopulateQuestLog // sets the buttons with titles and selected quest log script
+		* DisplaySelectedQuest // puts detail info into text field and shows progress bar
+		
+		
+Selecting detailed quest info
+
+* <quest id>_log // assigned to a button during PopulateQuestLog
+	* SetQuestLogSelectedIcon // sets the checkbox icon next to button saying it's selected
+		* DisplaySelectedQuest // puts detail info into text field and shows progress bar
+		
+		
+Abandonning a quest
+
+* <quest id>_abandon // assigned to the abandon button during DisplaySelectedQuest
+	* fail_quest() 
+		* AbandonQuest // set as a global event for Quest Failed
+			* PopulateQuestLog // update the quest log after removing it
+
 
 
 

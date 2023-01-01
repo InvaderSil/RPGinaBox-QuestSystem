@@ -8,4 +8,5 @@ $questDescription = "This is going to be a long, long, long descripiton to see w
 
 execute_script("InitQuest", true);
 
-execute_script($questId + "/" + $questId + "_start");
+$startScript = get_quest_script($questId, "start");
+execute_script($startScript, true);

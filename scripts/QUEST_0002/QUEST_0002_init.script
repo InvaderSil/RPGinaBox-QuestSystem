@@ -7,4 +7,5 @@ $questDescription = "Go go second quest!!";
 
 execute_script("InitQuest", true);
 
-execute_script($questId + "/" + $questId + "_start");
+$startScript = get_quest_script($questId, "start");
+execute_script($startScript, true);

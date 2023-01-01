@@ -1,4 +1,4 @@
-if($questId == null) then
+if($quest_id  == null) then
 	print("Not a valid quest id");
 	return -1;
 end;
@@ -13,10 +13,10 @@ end;
 
 $questCodex = global.property["ActiveQuestList"];
 
-if $questCodex[$questId] == null then
-	print($questId + " was not found.");
+if $questCodex[$quest_id] == null then
+	print($quest_id + " was not found.");
 	return -1;
 end;
 	
-$questCodex[$questId]["questStatus"] = "Abandoned";
+$questCodex[$quest_id]["questStatus"] = "Abandoned";
 execute_script("PopulateQuestLog");
