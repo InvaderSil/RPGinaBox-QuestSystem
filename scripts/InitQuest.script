@@ -16,21 +16,22 @@ if $questTitle == null then
 	$questTitle = "This is quest " + $questId;
 end;
 
-$returnValues = codex["rewardScript": null, "startScript": null, "endScript": null, "abandonScript": null];
+$scriptPrefix = $questId + "/" + $questId;
+
 $newQuest = codex["questID": $questId, 	
 	"title": $questTitle,
 	"description": $questDescription,
 	"steps": $stepArray,
-	"rewardScript": $questId + "/" + $questId + "_reward",
-	"startScript": $questId + "/" + $questId + "_start",
-	"endScript": $questId + "/" + $questId + "_end",
-	"logScript": $questId + "/" + $questId + "_log",
-	"abandonScript": $questId + "/" + $questId + "_abandon",
-	"returnValues": $returnValues,
-	"isFinished": false
+	"rewardScript": $scriptPrefix + "_reward",
+	"startScript": $scriptPrefix + "_start",
+	"initScript": $scriptPrefix + "_init",
+	"endScript": $scriptPrefix + "_end",
+	"logScript": $scriptPrefix + "_log",
+	"abandonScript": $scriptPrefix + "_abandon",
+	"questStatus": "In Progress"
 	];
 
 // Add to activeQuestList
 $localProp = global.property["ActiveQuestList"];
-$localProp.push_front($newQuest);
+$localProp[$questId] = $newQuest;
 global.property["ActiveQuestList"] = $localProp;

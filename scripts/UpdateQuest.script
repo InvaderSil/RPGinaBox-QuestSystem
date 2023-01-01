@@ -12,32 +12,21 @@ if $stepNumber == null then
 end;
 
 // first get the quest from the active quest list
-$questArray = global.property["ActiveQuestList"];
-$isFound = false;
-$index = 0;
-for $localQuest in $questArray do
-	if $localQuest["questID"] == $questId and $localQuest["isFinished"] == false then
-		$isFound = true;
-		print("questId -> " + $questId + " is found!");
-		break;
-	end;
-	$index += 1;
-end;
+$questCodex = global.property["ActiveQuestList"];
 
-if $isFound == false then
+if $questCodex[$questId] == null then
 	print($questId + " was not found.");
 	return -1;
 end;
 
 // Update the numstep to true
-$questArray[$index]["steps"][$stepNumber] = true;
+$questCodex[$questId]["steps"][$stepNumber] = true;
 
-$procStep = $questArray[$index]["steps"];
+$procStep = $questCodex[$questId]["steps"];
 // Validate that all steps are done
 if $procStep contains false then
 	print("Quest still in progress.");
 else
-	$questArray[$index]["isFinished"] = true;
  	complete_quest($questId);
 end;
 

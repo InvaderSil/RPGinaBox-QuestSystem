@@ -10,25 +10,15 @@ $questDetailsElemntId = "0001";
 $abaondonElementId = "0005";
 $questWidgetId = "Quest2";
 
-$questArray = global.property["ActiveQuestList"];
-$isFound = false;
-$index = 0;
-for $localQuest in $questArray do
-	if $localQuest["questID"] == $questId and $localQuest["isFinished"] == false then
-		$isFound = true;
-		print("questId -> " + $questId + " is found!");
-		break;
-	end;
-	$index += 1;
-end;
+$questCodex = global.property["ActiveQuestList"];
 
-if $isFound == false then
+if $questCodex[$questId] == null then
 	print($questId + " was not found.");
 	return -1;
 end;
 
 // First calculate the percert done on the quest
-$stepsArray = $questArray[$index]["steps"];
+$stepsArray = $questCodex[$questId]["steps"];
 $totalCount = $stepsArray.size();
 $completedCount = 0;
 for $i in $stepsArray do
@@ -40,12 +30,12 @@ global.property["SelectedQuestMax"] = $totalCount;
 global.property["SelectedQuestValue"] = $completedCount;
 
 // Set the quest details
-$textDescription = "Title: " + str($questArray[$index]["title"]);
-$textDescription = $textDescription + "\nDescription:\n " + str($questArray[$index]["description"]);
+$textDescription = "Title: " + str($questCodex[$questId]["title"]);
+$textDescription = $textDescription + "\nDescription:\n " + str($questCodex[$questId]["description"]);
 widget[$questWidgetId].element[$questDetailsElemntId].text = $textDescription;
 
 // And finally, set the abandon button
-widget[$questWidgetId].element[$abaondonElementId].script = $questArray[$index]["abandonScript"];
+widget[$questWidgetId].element[$abaondonElementId].script = $questCodex[$questId]["abandonScript"];
 
 // no, this is finally. Enable the check box image next to the selected button
 $buttonData = global.property["QuestLogButtons"];

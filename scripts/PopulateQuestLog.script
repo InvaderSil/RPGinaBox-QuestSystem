@@ -1,34 +1,46 @@
+$questWidgetName = "Quest2";
+$questWidget = widget[$questWidgetName];
 
-$questWidget = widget["Quest2"];
-
-//$buttonList = array[codex["buttonId": "0002", "checkImageId": "0008"],
-	//codex["buttonId": "0003", "checkImageId": "0009"]];
 $buttonList = global.property["QuestLogButtons"];
 
-$questArray = global.property["ActiveQuestList"];
+$questCodex = global.property["ActiveQuestList"];
 
-if ($questArray == null or $questArray.size() == 0) then
-	display_message("You got no active quests!");
- 	hide_widget("Quest2");
-	return 0;
-end;
-
-
-$questArrayIndex = 0;
-for $buttonObj in $buttonList do
-	$button = $buttonObj["buttonId"];
-	// Making sure we update buttons that mapp
-	if ($questArrayIndex < $questArray.size()) then
-		$questWidget.element[$button].text = $questArray[$questArrayIndex]["title"];
-		$questWidget.element[$button].script = $questArray[$questArrayIndex]["logScript"];
-		$questWidget.element[$button].visible = true;
-	else
-		$questWidget.element[$button].visible = false;
+// Getting list of keys from the codex
+$questList = array[];
+for $key in $questCodex do
+	$locQuest = $questCodex[$key];
+	if($locQuest["questStatus"] != "Completed" and $locQuest["questStatus"] != "Abandoned") then
+		$questList.push_back($key);
 	end;
-	$questArrayIndex += 1;
 end;
 
-$questObject = codex["questId": $questArray[0]["questID"], "checkImageId": $buttonList[0]["checkImageId"]];
-execute_script("DisplaySelectedQuest", true);
+// hide all the buttons by default
+for $but in $buttonList do
+	$visButton = $but["buttonId"];
+	$questWidget.element[$visButton].visible = false;
+end;
 
-show_widget("Quest2");
+$buttonIndex = 0;
+for $questKey in $questList do
+	$button = $buttonList[$buttonIndex]["buttonId"];
+	
+	$questWidget.element[$button].visible = true;
+	$questWidget.element[$button].text = $questCodex[$questKey]["title"];
+	$questWidget.element[$button].script = $questCodex[$questKey]["logScript"];
+		
+	$buttonIndex += 1;
+	if($buttonIndex >= $questList.size()) then
+		// we don't want to exceed the number of possible buttons
+		break;
+	end;
+end;
+
+// populate the selected quest for the first quest in the list if there is one
+if $questList.size() > 0 then
+	$questObject = codex["questId": $questCodex[$questList[0]]["questID"], "checkImageId": $buttonList[0]["checkImageId"]];
+	execute_script("DisplaySelectedQuest", true);
+	show_widget($questWidgetName);
+else
+	hide_widget($questWidgetName);
+	display_message("You have no active quests.");
+end;

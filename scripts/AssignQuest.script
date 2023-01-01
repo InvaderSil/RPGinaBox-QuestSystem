@@ -3,6 +3,16 @@ if $quest_id == null then
 	return -1;
 end;
 
-// Ideally I'd be using the script name in the codex object but this is ok for the time being given this convention
-$questScriptName = $quest_id + "/" + $quest_id + "_init";
-execute_script($questScriptName);
+$locQuest = global.property["ActiveQuestList"][$quest_id];
+
+if ($locQuest == null) then
+	$questScriptName = get_quest_script($quest_id, "init");
+	execute_script($questScriptName, true);
+	return 0;
+end;
+
+if($locQuest["questStatus"] == "Completed") then
+	display_message("You have already completed this quest! The creator should really put in a archive of old quests, huh.");
+	return 0;
+end;
+

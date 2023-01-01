@@ -1,10 +1,17 @@
-// Quest array init
-set_global_property("ActiveQuestList", array[]);
+// Quest codex initialition 
+set_global_property("ActiveQuestList", codex[]);
+
+// Creating the global values use to determine the
+// progress bar for the selected quests
 set_global_property("SelectedQuestMax", 1);
 set_global_property("SelectedQuestValue", 1);
 
 // Log button data init
-$questLogButtons =  array[codex["buttonId": "0002", "checkImageId": "0008"],
-	codex["buttonId": "0003", "checkImageId": "0009"]];
+// These are the potentiall buttons and checkbox ids 
+// on the quest log
+$questLogButtons =  array[
+	codex["buttonId": "0002", "checkImageId": "0008"],
+	codex["buttonId": "0003", "checkImageId": "0009"]
+];
 
 set_global_property("QuestLogButtons", $questLogButtons);

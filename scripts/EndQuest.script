@@ -3,27 +3,15 @@ if $quest_id == null then
 	return -1;
 end;
 
-$questScriptName = $quest_id + "/" + $quest_id + "_end";
+$questScriptName = get_quest_script($quest_id, "end");
 execute_script($questScriptName, true);
 
-// Pop this quest off the active array list
-
 // first get the quest from the active quest list
-$questArray = global.property["ActiveQuestList"];
-$isFound = false;
-$index = 0;
-for $localQuest in $questArray do
-	if $localQuest["questID"] == $quest_id then
-		$isFound = true;
-		print("questId -> " + $quest_id + " is found!");
-		break;
-	end;
-	$index += 1;
-end;
+$questCodex = global.property["ActiveQuestList"];
 
-if $isFound == false then
+if $questCodex[$quest_id] == null then
 	print($quest_id + " was not found.");
 	return -1;
 end;
 
-$questArray.remove($index);
+$questCodex[$quest_id]["questStatus"] = "Completed";
